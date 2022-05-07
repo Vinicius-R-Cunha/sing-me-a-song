@@ -15,7 +15,14 @@ describe("POST /recommendations", () => {
 
         const response = await supertest(app).post("/recommendations").send(body);
 
+        const recommendation = await prisma.recommendation.findUnique({
+            where: {
+                name: body.name
+            }
+        });
+
         expect(response.status).toBe(201);
+        expect(recommendation.youtubeLink).toBe(body.youtubeLink);
     });
 });
 
@@ -89,6 +96,81 @@ describe("POST /recommendations/id/downvote", () => {
         });
 
         expect(recommendationAfter).toBe(null);
+    });
+});
+
+describe("GET /recommendations", () => {
+    beforeEach(truncateRecommendations);
+    afterAll(disconnect);
+
+    it("should return the last 10 recommendations from 15 avaiable and status 200", async () => {
+        await recommendationFactory.createRandom(15);
+
+        const response = await supertest(app).get(`/recommendations`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveLength(10);
+    });
+});
+
+describe("GET /recommendations/id", () => {
+    beforeEach(truncateRecommendations);
+    afterAll(disconnect);
+
+    it("should return status 200 and the recommendation with that id", async () => {
+        const name = await recommendationFactory.create();
+
+        const recommendation = await prisma.recommendation.findUnique({
+            where: {
+                name
+            }
+        });
+
+        const response = await supertest(app).get(`/recommendations/${recommendation.id}`);
+
+        expect(response.status).toBe(200);
+    });
+});
+
+describe("GET /recommendations/random", () => {
+    beforeEach(truncateRecommendations);
+    afterAll(disconnect);
+
+    it("should return status 200 and the one random recommendation", async () => {
+        const name = await recommendationFactory.create();
+
+        const recommendation = await prisma.recommendation.findUnique({
+            where: {
+                name
+            }
+        });
+
+        const response = await supertest(app).get(`/recommendations/${recommendation.id}`);
+
+        expect(response.status).toBe(200);
+    });
+});
+
+describe("GET /recommendations/top/amount", () => {
+    beforeEach(truncateRecommendations);
+    afterAll(disconnect);
+
+    it("should return status 200 and the top 12 recommendations", async () => {
+        const amount = 12;
+
+        await recommendationFactory.createRandom(5, 4);
+        await recommendationFactory.createRandom(3, -2);
+        await recommendationFactory.createRandom(4, 2);
+        await recommendationFactory.createRandom(3, 3);
+
+        const response = await supertest(app).get(`/recommendations/top/${amount}`);
+        const responseWithAll = await supertest(app).get(`/recommendations/top/${amount + 3}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveLength(amount);
+        expect(responseWithAll.body[12]).toHaveProperty('score', -2);
+        expect(responseWithAll.body[13]).toHaveProperty('score', -2);
+        expect(responseWithAll.body[14]).toHaveProperty('score', -2);
     });
 });
 
