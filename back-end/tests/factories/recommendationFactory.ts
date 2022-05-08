@@ -32,3 +32,10 @@ export async function createRandom(quantity = 1, score = 0) {
         });
     }
 }
+
+export function createRandomBody() {
+    return {
+        name: faker.name.firstName(),
+        youtubeLink: "https://www.youtube.com/watch?v=vEmPpZT6iJs&ab_channel=TimBernardes"
+    }
+}

@@ -1,7 +1,7 @@
 import supertest from "supertest";
-import app from "../src/app";
-import { prisma } from "../src/database";
-import * as recommendationFactory from "../tests/factories/recommendationFactory.js";
+import app from "../../src/app";
+import { prisma } from "../../src/database";
+import * as recommendationFactory from "../factories/recommendationFactory.js";
 
 describe("POST /recommendations", () => {
     beforeEach(truncateRecommendations);
