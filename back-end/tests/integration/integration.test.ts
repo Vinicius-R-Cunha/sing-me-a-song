@@ -24,6 +24,24 @@ describe("POST /recommendations", () => {
         expect(response.status).toBe(201);
         expect(recommendation.youtubeLink).toBe(body.youtubeLink);
     });
+
+    it("should return 422 given a invalid body and not add to database", async () => {
+        const body = {
+            name: "Não - Tim Bernardes",
+            youtubeLink: ""
+        }
+
+        const response = await supertest(app).post("/recommendations").send(body);
+
+        const recommendation = await prisma.recommendation.findUnique({
+            where: {
+                name: body.name
+            }
+        });
+
+        expect(response.status).toBe(422);
+        expect(recommendation).toBeFalsy();
+    });
 });
 
 describe("POST /recommendations/id/upvote", () => {
@@ -136,18 +154,18 @@ describe("GET /recommendations/random", () => {
     beforeEach(truncateRecommendations);
     afterAll(disconnect);
 
-    it("should return status 200 and the one random recommendation", async () => {
-        const name = await recommendationFactory.create();
+    it("should return status 200 and one random recommendation", async () => {
+        await recommendationFactory.create();
 
-        const recommendation = await prisma.recommendation.findUnique({
-            where: {
-                name
-            }
-        });
-
-        const response = await supertest(app).get(`/recommendations/${recommendation.id}`);
+        const response = await supertest(app).get(`/recommendations/random`);
 
         expect(response.status).toBe(200);
+    });
+
+    it("should return status 404 if there are no recommendations", async () => {
+        const response = await supertest(app).get(`/recommendations/random`);
+
+        expect(response.status).toBe(404);
     });
 });
 
@@ -171,6 +189,17 @@ describe("GET /recommendations/top/amount", () => {
         expect(responseWithAll.body[12]).toHaveProperty('score', -2);
         expect(responseWithAll.body[13]).toHaveProperty('score', -2);
         expect(responseWithAll.body[14]).toHaveProperty('score', -2);
+    });
+});
+
+describe("POST /truncate", () => {
+    beforeEach(truncateRecommendations);
+    afterAll(disconnect);
+
+    it("should return status 200 and truncate recommendations", async () => {
+        const response = await supertest(app).post("/reset").send({});
+
+        expect(response.status).toBe(200);
     });
 });
 
