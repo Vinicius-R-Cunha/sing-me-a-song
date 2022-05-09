@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1651977273626" clover="3.2.0">
-  <project timestamp="1651977273626" name="All files">
+<coverage generated="1652103967283" clover="3.2.0">
+  <project timestamp="1652103967283" name="All files">
     <metrics statements="110" coveredstatements="107" conditionals="33" coveredconditionals="23" methods="37" coveredmethods="36" elements="180" coveredelements="166" complexity="0" loc="110" ncloc="110" packages="9" files="12" classes="12"/>
     <package name="src">
       <metrics statements="9" coveredstatements="9" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
@@ -68,10 +68,10 @@
       <file name="recommendationRepository.ts" path="/home/vinicao/Desktop/projetos/sing-me-a-song/back-end/src/repositories/recommendationRepository.ts">
         <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="9" coveredmethods="9"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="17" count="5" type="stmt"/>
-        <line num="19" count="5" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
         <line num="27" count="2" type="stmt"/>
-        <line num="36" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="36" count="4" type="cond" truecount="1" falsecount="0"/>
         <line num="38" count="2" type="stmt"/>
         <line num="40" count="2" type="stmt"/>
         <line num="46" count="4" type="stmt"/>
@@ -137,11 +137,11 @@
         <line num="61" count="3" type="stmt"/>
         <line num="65" count="5" type="stmt"/>
         <line num="70" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="71" count="2" type="stmt"/>
-        <line num="74" count="3" type="stmt"/>
+        <line num="71" count="3" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
         <line num="78" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="79" count="4" type="stmt"/>
-        <line num="82" count="1" type="stmt"/>
+        <line num="79" count="3" type="stmt"/>
+        <line num="82" count="2" type="stmt"/>
         <line num="86" count="2" type="stmt"/>
         <line num="89" count="2" type="stmt"/>
       </file>
